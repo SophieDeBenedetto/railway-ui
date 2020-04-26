@@ -37,8 +37,8 @@ defmodule RailwayUi.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.2"},
-      {:phoenix_pubsub, "~> 1.1"},
+      {:phoenix, "~> 1.5.1"},
+      {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
@@ -50,7 +50,7 @@ defmodule RailwayUi.MixProject do
       {:railway_ipc, "0.1.6"},
       # {:railway_ipc, path: "../railway_ipc"},
       {:ex_machina, "~> 2.3", only: :test},
-      {:phoenix_live_view, "~> 0.4.0"},
+      {:phoenix_live_view, "~> 0.12.0"},
       {:floki, ">= 0.0.0", only: :test},
       {:mox, "~> 0.5", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}

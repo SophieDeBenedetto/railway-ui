@@ -41,6 +41,6 @@ npm-debug.log
 # variables.
 /config/*.secret.exs
 
-/log/*
+log/*
 
 .envrc

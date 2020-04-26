@@ -7,71 +7,95 @@ defmodule RailwayUiWeb.MessageLive.Index do
     Phoenix.View.render(RailwayUiWeb.MessageView, "index.html", assigns)
   end
 
-  def mount(%{current_user_uuid: current_user_uuid} = session, socket) do
+  def mount(_params, %{current_user_uuid: current_user_uuid} = _session, socket) do
+    IO.puts "CURRENT USER"
+    IO.puts current_user_uuid
     socket =
       socket
       |> assign(:state, State.new(current_user_uuid))
+      |> assign(:messages, [])
     {:ok, socket}
   end
 
-  def handle_params(
-        %{"page" => page_num, "search" => %{"query" => query, "value" => value}},
-        uri,
-        %{assigns: %{state: state}} = socket
-      ) do
-    %{path: "/" <> message_type} = URI.parse(uri)
-    state = State.new(state, message_type, page_num)
+  def mount(_params, session, socket) do
+    IO.puts "SESSION"
+    IO.inspect session
     socket =
       socket
-      |> assign(:state, State.for_search(state, query, value, page_num))
-      |> assign(:messages, State.messages_search(state, query, value, page_num))
-
-    {:noreply, socket}
+      |> assign(:state, State.new("12345"))
+      |> assign(:messages, [])
+    {:ok, socket}
   end
 
-  def handle_params(
-        %{"page" => page_num},
-        uri,
-        %{assigns: %{state: state}} = socket
-      ) do
-    %{path: "/" <> message_type} = URI.parse(uri)
-    state = State.new(state, message_type, page_num)
-    socket =
-      socket
-      |> assign(:state, state)
-      |> assign(:messages, State.messages_page(state, page_num))
-
-    {:noreply, socket}
-  end
-
-  def handle_params(
-        %{"search" => %{"query" => query, "value" => value}},
-        uri,
-        %{assigns: %{state: state}} = socket
-      ) do
-    %{path: "/" <> message_type} = URI.parse(uri)
-    state = State.new(state, message_type)
-    socket =
-      socket
-      |> assign(:state, State.for_search(state, query, value))
-      |> assign(:messages, State.messages_search(state, query, value))
-
-    {:noreply, socket}
-  end
-  def handle_params(
-        _params,
-        uri,
-        %{assigns: %{state: state}} = socket
-      ) do
-    %{path: "/" <> message_type} = URI.parse(uri)
-    state = State.new(state, message_type)
-    socket =
-      socket
-      |> assign(:state, state)
-      |> assign(:messages, State.load_messages(state))
-
-    {:noreply, socket}
-  end
+  # def handle_params(%{}, uri, %{assigns: %{state: state}} = socket) do
+  #   %{path: "/" <> message_type} = URI.parse(uri)
+  #     state = State.new(state, message_type)
+  #   socket =
+  #     socket
+  #     |> assign(:state, state)
+  #     |> assign(:messages, State.load_messages(state))
+  #
+  #   {:noreply, socket}
+  # end
+  #
+  # def handle_params(
+  #       %{"page" => page_num, "search" => %{"query" => query, "value" => value}},
+  #       uri,
+  #       %{assigns: %{state: state}} = socket
+  #     ) do
+  #   %{path: "/" <> message_type} = URI.parse(uri)
+  #   state = State.new(state, message_type, page_num)
+  #   socket =
+  #     socket
+  #     |> assign(:state, State.for_search(state, query, value, page_num))
+  #     |> assign(:messages, State.messages_search(state, query, value, page_num))
+  #
+  #   {:noreply, socket}
+  # end
+  #
+  # def handle_params(
+  #       %{"page" => page_num},
+  #       uri,
+  #       %{assigns: %{state: state}} = socket
+  #     ) do
+  #   %{path: "/" <> message_type} = URI.parse(uri)
+  #   state = State.new(state, message_type, page_num)
+  #   socket =
+  #     socket
+  #     |> assign(:state, state)
+  #     |> assign(:messages, State.messages_page(state, page_num))
+  #
+  #   {:noreply, socket}
+  # end
+  #
+  # def handle_params(
+  #       %{"search" => %{"query" => query, "value" => value}},
+  #       uri,
+  #       %{assigns: %{state: state}} = socket
+  #     ) do
+  #   %{path: "/" <> message_type} = URI.parse(uri)
+  #   state = State.new(state, message_type)
+  #   socket =
+  #     socket
+  #     |> assign(:state, State.for_search(state, query, value))
+  #     |> assign(:messages, State.messages_search(state, query, value))
+  #
+  #   {:noreply, socket}
+  # end
+  # def handle_params(
+  #       _params,
+  #       uri,
+  #       %{assigns: %{state: state}} = socket
+  #     ) do
+  #   %{path: "/" <> message_type} = URI.parse(uri)
+  #   state = State.new(state, message_type)
+  #   socket =
+  #     socket
+  #     |> assign(:state, state)
+  #     |> assign(:messages, State.load_messages(state))
+  #
+  #   {:noreply, socket}
+  # end
 
   def handle_event("search", params, socket) do
     {:noreply,
