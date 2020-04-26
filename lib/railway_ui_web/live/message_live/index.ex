@@ -11,7 +11,7 @@ defmodule RailwayUiWeb.MessageLive.Index do
     socket =
       socket
       |> assign(:state, State.new(current_user_uuid))
-    {:ok, socket, temporary_assigns: [messages: nil]}
+    {:ok, socket}
   end
 
   def handle_params(
@@ -93,6 +93,8 @@ defmodule RailwayUiWeb.MessageLive.Index do
         %{"_target" => ["search", "query"], "search" => %{"query" => query}},
         %{assigns: %{state: state}} = socket
       ) do
+    IO.puts "HERE"
+    IO.inspect(socket.assigns.messages)
     {:noreply, assign(socket, :state, State.set_search_query(state, query))}
   end
 

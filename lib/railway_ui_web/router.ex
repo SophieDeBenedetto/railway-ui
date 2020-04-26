@@ -1,5 +1,14 @@
 defmodule RailwayUiWeb.Router do
   use RailwayUiWeb, :router
+  defmacro live_messages(opts) do
+    quote bind_quoted: binding() do
+      scope path, alias: false, as: false do
+        import Phoenix.LiveView.Router, only: [live: 4]
+
+        live "/published_messages", MessageLive.Index, opts
+      end
+    end
+  end
 
   pipeline :browser do
     plug :accepts, ["html"]
